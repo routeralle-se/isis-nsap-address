@@ -1,0 +1,47 @@
+{% set ip = ip_address.split(".") | list %}
+
+{# first byte in ip_address #}
+{% if ip[0] | length == 1 %}
+{% set first_byte = "00" + ip[0] %}
+{% elif ip[0] | length == 2 %}
+{% set first_byte = "0" + ip[0] %}
+{% elif ip[0] | length == 3 %}
+{% set first_byte = ip[0] %}
+{% endif %}
+
+{# second byte in ip_address #}
+{% if ip[1] | length == 1 %}
+{% set second_byte = "00" + ip[1] %}
+{% elif ip[1] | length == 2 %}
+{% set second_byte = "0" + ip[1] %}
+{% elif ip[1] | length == 3 %}
+{% set second_byte = ip[1] %}
+{% endif %}
+
+{# third byte in ip_address #}
+{% if ip[2] | length == 1 %}
+{% set third_byte = "00" + ip[2] %}
+{% elif ip[2] | length == 2 %}
+{% set third_byte = "0" + ip[2] %}
+{% elif ip[2] | length == 3 %}
+{% set third_byte = ip[2] %}
+{% endif %}
+
+{# fourth byte in ip_address #}
+{% if ip[3] | length == 1 %}
+{% set fourth_byte = "00" + ip[3] %}
+{% elif ip[3] | length == 2 %}
+{% set fourth_byte = "0" + ip[3] %}
+{% elif ip[3] | length == 3 %}
+{% set fourth_byte = ip[3] %}
+{% endif %}
+
+{# make isis system id from formatted bytes #}
+{% set four_byte_string = first_byte + second_byte + third_byte + fourth_byte %}
+{% set chunks = [] %}
+{% for i in range(0, four_byte_string | length, 4) %}
+    {% set _ = chunks.append(four_byte_string[i:i+4]) %}
+{% endfor %}
+{% set isis_system_id = chunks | join(".") %}
+
+{{ area_id }}.{{ isis_system_id }}.00
